@@ -11,26 +11,31 @@ import javax.swing.border.Border;
  */
 public class GroupBorder implements Border {
 	private final JLabel label = new JLabel();
-	private int titleHeight = 20;
-	private int padding = 6;
-	private Color stroke = Color.BLACK;
-	private Paint fill = Color.WHITE;
+	private int titleHeight;
+	private int padding;
+	private Color stroke;
+	private Paint fill;
+	private boolean headerStrokeVisible;
 
 	public GroupBorder() {
-		label.setForeground(Color.BLACK);
-		label.setHorizontalAlignment(JLabel.LEFT);
-		label.setVerticalAlignment(JLabel.CENTER);
+		this(null, "GroupBorder", 20, 6, Color.BLACK, Color.LIGHT_GRAY, true);
 	}
 
-	public GroupBorder(Icon icon, String title, int titleHeight, int padding, Color foreground, Color stroke, Paint fill) {
+	public GroupBorder(Icon icon, String title, int titleHeight, int padding, Color stroke, Paint fill) {
+		this(icon, title, titleHeight, padding, stroke, fill, true);
+	}
+
+	public GroupBorder(Icon icon, String title, int titleHeight, int padding, Color stroke, Paint fill, boolean headerStrokeVisible) {
 		this.titleHeight = titleHeight;
 		this.padding = padding;
 		this.stroke = stroke;
 		this.fill = fill;
+		this.headerStrokeVisible = headerStrokeVisible;
 
-		label.setForeground(foreground);
 		label.setIcon(icon);
 		label.setText(title);
+		label.setHorizontalAlignment(JLabel.LEFT);
+		label.setVerticalAlignment(JLabel.CENTER);
 	}
 
 	@Override
@@ -45,10 +50,19 @@ public class GroupBorder implements Border {
 
 		if (stroke != null) {
 			gg.setColor(stroke);
-			gg.drawRect(0, 0, width-1, height-1);
+			gg.drawLine(0, titleHeight, 0, height);
+			gg.drawLine(width-1, titleHeight, width-1, height);
+			gg.drawLine(0, height-1, width, height-1);
+
+			if (headerStrokeVisible) {
+				gg.drawLine(0, 0, 0, titleHeight);
+				gg.drawLine(width-1, 0, width-1, titleHeight);
+				gg.drawLine(0, 0, width, 0);
+			}
 		}
 
 		label.setFont(c.getFont());
+		label.setForeground(c.getForeground());
 		label.setSize(width - padding*2, titleHeight);
 
 		gg.translate(padding, 0);
@@ -122,5 +136,13 @@ public class GroupBorder implements Border {
 
 	public void setTitle(String title) {
 		label.setText(title);
+	}
+
+	public boolean isHeaderStrokeVisible() {
+		return headerStrokeVisible;
+	}
+
+	public void setHeaderStrokeVisible(boolean headerStrokeVisible) {
+		this.headerStrokeVisible = headerStrokeVisible;
 	}
 }

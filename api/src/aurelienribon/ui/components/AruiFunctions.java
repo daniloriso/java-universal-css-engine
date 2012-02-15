@@ -14,15 +14,17 @@ public class AruiFunctions {
 		public GroupBorderFunction() {super("arui-groupborder");}
 
 		@Override public Class[][] getParams() {return new Class[][] {
-			{Icon.class, String.class, Integer.class, Integer.class, Color.class, Color.class, Paint.class}
+			{Icon.class, String.class, Integer.class, Integer.class, Color.class, Paint.class},
+			{Icon.class, String.class, Integer.class, Integer.class, Color.class, Paint.class, Boolean.class}
 		};}
 
 		@Override public String[][] getParamsNames() {return new String[][] {
-			{"icon", "title", "titleHeight", "padding", "foreground", "stroke", "fill"}
+			{"icon", "title", "titleHeight", "padding", "stroke", "fill"},
+			{"icon", "title", "titleHeight", "padding", "stroke", "fill", "headerStrokeVisible"}
 		};}
 
 		@Override public boolean canBeNull(int paramsId, int paramId) {
-			return paramId == 0 || paramId == 5;
+			return paramId == 0 || paramId == 4;
 		}
 
 		@Override public Object process(List<Object> params) {
@@ -30,10 +32,20 @@ public class AruiFunctions {
 			String title = (String) params.get(1);
 			int titleHeight = (Integer) params.get(2);
 			int padding = (Integer) params.get(3);
-			Color foreground = (Color) params.get(4);
-			Color stroke = (Color) params.get(5);
-			Paint fill = (Paint) params.get(6);
-			return new GroupBorder(icon, title, titleHeight, padding, foreground, stroke, fill);
+			Color stroke = (Color) params.get(4);
+			Paint fill = (Paint) params.get(5);
+
+			if (params.size() == 6) {
+				return new GroupBorder(icon, title, titleHeight, padding, stroke, fill);
+			}
+
+			if (params.size() == 7) {
+				boolean headerStrokeVisible = (Boolean) params.get(6);
+				return new GroupBorder(icon, title, titleHeight, padding, stroke, fill, headerStrokeVisible);
+			}
+
+			assert false;
+			return null;
 		}
 	};
 }

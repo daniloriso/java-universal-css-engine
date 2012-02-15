@@ -54,11 +54,11 @@ aurelienribon-ui-components-TabPanel {
 }
 
 .styleControlPanel {
-	-swing-border: arui-groupborder(null, "Style", 20, 6, #FFF, #444, #333);
+	-swing-border: arui-groupborder(null, "Style", 20, 6, #444, #444, false);
 }
 
 .tabPanelControlPanel {
-	-swing-border: arui-groupborder(null, "TabPanel", 20, 6, #FFF, #444, #333);
+	-swing-border: arui-groupborder(null, "TabPanel", 20, 6, #444, #444, false);
 }
 
 .applyButton {
